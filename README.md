@@ -1,5 +1,11 @@
 # HackAMatch
 
+**Live application:** https://hackamatch.onrender.com/
+
+Hosted on Render with a separate persistent PostgreSQL database. Deployment verified on 22 October 2026: homepage/login/signup and database health respond; private API routes reject anonymous requests. PostgreSQL integration (36 tests), production frontend build and full Docker smoke test pass in GitHub Actions.
+
+This is a free preview deployment. It sleeps when idle. Email delivery and organizer account setup are required before real registrations.
+
 A questionnaire-based team formation app for **Data Mavericks × NSDC**. Participants verify the email used on Luma, see their imported responses, and join a server-timed registration window. A persistent worker proposes teams of exactly three; an organizer reviews and publishes them. Participants only see their own team after publication.
 
 This repository contains the application source, local setup, and Render deployment configuration. Real participant data is not included. See [verification](docs/VERIFICATION.md) for prior local checks and [Render deployment](deploy/README.md) for the hosted runtime and free-preview limitations. GitHub Actions runs PostgreSQL integration, frontend production build, and a complete Docker smoke test on pushes.
