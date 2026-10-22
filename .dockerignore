@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/.next
+**/__pycache__
+**/.pytest_cache
+**/*.db
+**/*.db-*
+**/*.sqlite*
+**/*.pyc
+**/*.tsbuildinfo
+.env
+.env.*
+!.env.example
+private
+upload
+outputs
+*Guests*.csv

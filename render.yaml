@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: hackamatch
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: COOKIE_SECURE
+        value: 'true'
+      - key: PORT
+        value: '10000'
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=192
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: SMTP_HOST
+        value: ''

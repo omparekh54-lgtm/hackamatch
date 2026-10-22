@@ -1,0 +1,1 @@
+{"name":"hackamatch","private":true,"scripts":{"dev":"cd frontend && node scripts/dev.mjs","build":"npm --prefix frontend run build"}}

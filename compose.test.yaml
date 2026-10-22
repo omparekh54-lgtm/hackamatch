@@ -1,0 +1,23 @@
+name: hackamatch-tests
+services:
+  dbtest:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: synthetic-test-password
+      POSTGRES_DB: hackamatch_test
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U test -d hackamatch_test']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    tmpfs: [/var/lib/postgresql/data]
+  tests:
+    build:
+      context: ./backend
+      target: tests
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://test:synthetic-test-password@dbtest:5432/hackamatch_test
+    depends_on:
+      dbtest:
+        condition: service_healthy

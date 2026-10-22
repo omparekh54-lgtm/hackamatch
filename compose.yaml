@@ -1,0 +1,70 @@
+name: hackamatch
+x-backend: &backend
+  build: ./backend
+  restart: unless-stopped
+  environment: &backend-env
+    DATABASE_URL: postgresql+psycopg://hackamatch:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/hackamatch
+    APP_ENV: ${APP_ENV:-development}
+    PUBLIC_URL: ${PUBLIC_URL:-http://localhost:3000}
+    COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    SMTP_HOST: ${SMTP_HOST-mailpit}
+    SMTP_PORT: ${SMTP_PORT:-1025}
+    SMTP_TLS: ${SMTP_TLS:-false}
+    SMTP_FROM: ${SMTP_FROM:-hackamatch@localhost}
+    SMTP_USER: ${SMTP_USER:-}
+    SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+  depends_on:
+    migrate:
+      condition: service_completed_successfully
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hackamatch
+      POSTGRES_DB: hackamatch
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U hackamatch -d hackamatch']
+      interval: 3s
+      timeout: 3s
+      retries: 25
+  migrate:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://hackamatch:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/hackamatch
+    command: [python, -m, alembic, upgrade, head]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    <<: *backend
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  worker:
+    <<: *backend
+    command: [python, -m, app.worker]
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_INTERNAL_URL: http://api:8000
+    restart: unless-stopped
+    ports: ['127.0.0.1:3000:3000']
+    depends_on:
+      api:
+        condition: service_healthy
+  mailpit:
+    image: axllent/mailpit:v1.31.5
+    restart: unless-stopped
+    ports: ['127.0.0.1:8025:8025']
+    volumes: [maildata:/data]
+    environment:
+      MP_DATABASE: /data/mailpit.db
+volumes:
+  pgdata:
+  maildata:
