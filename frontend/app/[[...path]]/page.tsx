@@ -75,7 +75,7 @@ function Brand() {
       <span className="brand-icon">
         <Command size={21} />
       </span>
-      hackamatch<span className="brand-dot">.</span>
+      <span className="brand-word">HackA<span>Match</span></span>
     </Link>
   );
 }
@@ -309,20 +309,21 @@ function Landing({ status }: { status: Data | null }) {
       </header>
       <main>
         <div className="hero-eyebrow">
-          <span /> DATA MAVERICKS × NSDC PRESENT
+          <span /> DATA MAVERICKS × NSDC PRESENTS
         </div>
         <div className="hero-grid">
           <section>
             <h1>
-              Great ideas.
+              Meet people.
               <br />
-              Better <span>together.</span>
+              Get matched.
+              <br />
+              <span>Build together.</span>
             </h1>
             <p className="hero-text">
-              You bring the spark. We find your people.
-              <br />
-              Meet two teammates whose skills complement yours, and turn a
-              hackathon idea into something real.
+              Different skills. Same team. Bigger ideas.
+              Find two teammates who complement your strengths and turn that
+              “what if” into something worth building.
             </p>
             <div className="hero-actions">
               <Button asChild>
@@ -346,7 +347,9 @@ function Landing({ status }: { status: Data | null }) {
               </span>
             </div>
           </section>
-          <div className="team-art">
+          <div className="team-art" aria-label="Three complementary teammates: builder, designer and catalyst">
+            <div className="art-doodle" aria-hidden="true">✦</div>
+            <div className="art-sticker">GOOD PEOPLE.<br />BIGGER IDEAS.</div>
             <div className="orb" />
             <div className="art-grid" />
             <div className="art-label">
@@ -396,6 +399,11 @@ function Landing({ status }: { status: Data | null }) {
             </div>
           </div>
         </div>
+        <div className="rally-strip" aria-hidden="true">
+          <span>IDEA</span><Zap size={18} /><span>TEAM</span><Zap size={18} />
+          <span>CODE</span><Zap size={18} /><span>COLLABORATE</span><Zap size={18} />
+          <span>INNOVATE</span><Zap size={18} /><span>IMPACT</span>
+        </div>
         <div className="window-strip">
           <div>
             <Clock size={20} />
@@ -414,7 +422,7 @@ function Landing({ status }: { status: Data | null }) {
         <section id="how" className="how">
           <div>
             <span className="eyebrow">LESS SEARCHING. MORE BUILDING.</span>
-            <h2>Three steps. Your next team.</h2>
+            <h2>Your people are three steps away.</h2>
           </div>
           <div className="steps">
             {[
