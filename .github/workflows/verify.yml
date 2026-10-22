@@ -12,7 +12,7 @@ jobs:
           POSTGRES_DB: hackamatch_test
         ports: ['5432:5432']
         options: >-
-          --health-cmd 'pg_isready -U test -d hackamatch_test'
+          --health-cmd "pg_isready -U test -d hackamatch_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
           POSTGRES_DB: hackamatch_smoke_test
         ports: ['5432:5432']
         options: >-
-          --health-cmd 'pg_isready -U test -d hackamatch_smoke_test'
+          --health-cmd "pg_isready -U test -d hackamatch_smoke_test"
           --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
@@ -65,4 +65,4 @@ jobs:
         run: python deploy/smoke_test.py
       - name: Show container logs on failure
         if: failure()
-        run: docker logs hackamatch-smoke
+        run: docker logs hackamatch-smoke 2>/dev/null || true
